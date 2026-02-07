@@ -1,0 +1,159 @@
+---
+interface Props {
+	title: string;
+	description?: string;
+}
+
+const { title, description = 'Richard Krause is an author of epigrams, short stories, prose poems, and novels. Explore his published works, including Studies in Insignificance, The Horror of the Ordinary, Eye Exams, and more.' } = Astro.props;
+const currentPath = Astro.url.pathname;
+const siteUrl = 'https://richardkrausewriting.com';
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" href="/favicon.ico" />
+		<meta name="generator" content={Astro.generator} />
+		<meta name="description" content={description} />
+		<title>{title} | RICHARD KRAUSE writings</title>
+		
+		<!-- Open Graph / Facebook -->
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content={`${siteUrl}${currentPath}`} />
+		<meta property="og:title" content={`${title} | RICHARD KRAUSE writings`} />
+		<meta property="og:description" content={description} />
+		
+		<!-- Twitter -->
+		<meta property="twitter:card" content="summary_large_image" />
+		<meta property="twitter:url" content={`${siteUrl}${currentPath}`} />
+		<meta property="twitter:title" content={`${title} | RICHARD KRAUSE writings`} />
+		<meta property="twitter:description" content={description} />
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+				box-sizing: border-box;
+			}
+
+			:root {
+				font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+				line-height: 1.7;
+				color: #1a1a1a;
+				background-color: #ffffff;
+			}
+
+			body {
+				min-height: 100vh;
+				display: flex;
+				flex-direction: column;
+			}
+
+			header {
+				border-bottom: 1px solid #e5e5e5;
+				padding: 2rem 0;
+				background-color: #ffffff;
+			}
+
+			nav {
+				max-width: 1200px;
+				margin: 0 auto;
+				padding: 0 2rem;
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				flex-wrap: wrap;
+				gap: 2rem;
+			}
+
+			.logo {
+				font-size: 1.75rem;
+				font-weight: 300;
+				letter-spacing: 0.1em;
+				text-transform: uppercase;
+				color: #1a1a1a;
+				text-decoration: none;
+			}
+
+			.logo:hover {
+				color: #666;
+			}
+
+			nav ul {
+				display: flex;
+				list-style: none;
+				gap: 2rem;
+				flex-wrap: wrap;
+			}
+
+			nav a {
+				color: #666;
+				text-decoration: none;
+				font-size: 0.95rem;
+				text-transform: uppercase;
+				letter-spacing: 0.05em;
+				transition: color 0.3s ease;
+				position: relative;
+			}
+
+			nav a:hover,
+			nav a[aria-current="page"] {
+				color: #1a1a1a;
+			}
+
+			main {
+				flex: 1;
+				max-width: 1200px;
+				width: 100%;
+				margin: 0 auto;
+				padding: 4rem 2rem;
+			}
+
+			footer {
+				border-top: 1px solid #e5e5e5;
+				padding: 2rem;
+				text-align: center;
+				color: #666;
+				font-size: 0.875rem;
+			}
+
+			@media (max-width: 768px) {
+				nav {
+					flex-direction: column;
+					align-items: flex-start;
+				}
+
+				nav ul {
+					gap: 1.5rem;
+				}
+
+				main {
+					padding: 2rem 1.5rem;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<header>
+			<nav>
+				<a href="/" class="logo">RICHARD KRAUSE writings</a>
+				<ul>
+					<li><a href="/" aria-current={currentPath === '/' ? 'page' : undefined}>Home</a></li>
+					<li><a href="/publications" aria-current={currentPath.startsWith('/publications') ? 'page' : undefined}>Publications</a></li>
+					<li><a href="/writing" aria-current={currentPath.startsWith('/writing') ? 'page' : undefined}>Writing</a></li>
+					<li><a href="/reviews" aria-current={currentPath.startsWith('/reviews') ? 'page' : undefined}>Reviews</a></li>
+					<li><a href="/about" aria-current={currentPath.startsWith('/about') || currentPath.startsWith('/contact') ? 'page' : undefined}>About</a></li>
+				</ul>
+			</nav>
+		</header>
+		<main>
+			<slot />
+		</main>
+		<footer>
+			<p>&copy; {new Date().getFullYear()} RICHARD KRAUSE writings. All rights reserved.</p>
+		</footer>
+	</body>
+</html>
+

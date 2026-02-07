@@ -1,0 +1,77 @@
+---
+import Layout from '../components/Layout.astro';
+---
+
+<Layout title="About">
+	<div style="max-width: 800px; margin: 0 auto;">
+		<h1 style="font-size: 2.5rem; font-weight: 300; margin-bottom: 3rem; letter-spacing: 0.05em;">
+			About
+		</h1>
+		<div class="author-photo">
+			<img 
+				src="/krause_photo1.png" 
+				alt="Richard Krause"
+				loading="lazy"
+			/>
+		</div>
+		<div style="font-size: 1.125rem; line-height: 1.8; color: #333;">
+			<h2 style="font-size: 1.75rem; font-weight: 300; margin-bottom: 1.5rem; margin-top: 0; letter-spacing: 0.05em;">
+				Background
+			</h2>
+			<p style="margin-bottom: 1.5rem;">
+				Richard Krause was born in New York City and lived in the Bronx until he was ten. He was then placed in Milton Hershey School in Pennsylvania, an orphanage where he lived in four homes with twenty other boys until he was seventeen, in the last two homes he performed household chores and milked cows. His father died when he was one.
+			</p>
+			<p style="margin-bottom: 1.5rem;">
+				Krause attended local junior college in Hershey, Pennsylvania and then Franklin and Marshall College in Lancaster. He went to graduate school at the University of Kansas and was drafted into the Army after receiving his degree. He was honorably discharged one year later as a conscientious objector. For five years he drove a taxi in New York City and lived in Japan for nine years teaching at Tokyo Women's College and Ibaraki University. He is retired from teaching at Somerset Community College. He has a wife and two children.
+			</p>
+
+			<h2 style="font-size: 1.75rem; font-weight: 300; margin-bottom: 1.5rem; margin-top: 3rem; letter-spacing: 0.05em;">
+				Writing
+			</h2>
+			<p style="margin-bottom: 1.5rem;">
+				Richard Krause writes epigrams, short stories, prose poems, and novels. He looks for those ironies that illuminate human nature. Also, what drives his fiction and epigrams are the twists that give a story or observation literary value. His primary interest is the psychology of human behavior and his relationship with the world around him.
+			</p>
+
+			<h2 id="contact" class="contact-heading" style="font-size: 1.75rem; font-weight: 300; margin-bottom: 1.5rem; margin-top: 3rem; letter-spacing: 0.05em;">
+				Contact
+			</h2>
+			<p>
+				<strong>Email:</strong> 
+				<a href="mailto:krauserichard3@gmail.com" style="color: #1a1a1a; text-decoration: underline;">
+					krauserichard3@gmail.com
+				</a>
+			</p>
+		</div>
+	</div>
+
+	<style>
+		.author-photo {
+			margin-bottom: 2rem;
+			text-align: left;
+		}
+
+		.author-photo img {
+			max-width: 180px;
+			width: 100%;
+			height: auto;
+			object-fit: contain;
+			opacity: 0.95;
+			transition: opacity 0.3s ease;
+		}
+
+		.author-photo img:hover {
+			opacity: 1;
+		}
+
+		.contact-heading {
+			scroll-margin-top: 2rem;
+		}
+
+		@media (max-width: 640px) {
+			.author-photo img {
+				max-width: 150px;
+			}
+		}
+	</style>
+</Layout>
+

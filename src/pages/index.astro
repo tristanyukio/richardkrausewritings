@@ -1,17 +1,147 @@
 ---
+import Layout from '../components/Layout.astro';
 
+function createSlug(title: string): string {
+	return title
+		.toLowerCase()
+		.replace(/[^a-z0-9]+/g, '-')
+		.replace(/(^-|-$)/g, '');
+}
+
+const books = [
+	{ id: 1, image: '/rk1.jpeg', title: 'Blind Insights into the Writing Process' },
+	{ id: 2, image: '/rk3.webp', title: 'The Horror of the Ordinary' },
+	{ id: 3, image: '/rk6.jpg', title: 'Eye Exams: A Book of Epigrams' },
+	{ id: 4, image: '/rk2.jpeg', title: 'Unashamed Observations' },
+	{ id: 5, image: '/rk5.webp', title: 'Studies in Insignificance' },
+	{ id: 6, image: '/rk4.webp', title: 'Crawl Space and Other Stories of Limited Maneuverability' },
+];
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Layout title="Home">
+	<div style="max-width: 1200px; margin: 0 auto;">
+		<div class="hero-section">
+			<blockquote class="epigram">
+				Could it be that we are the only true strangers that we will meet in our lifetime, and everyone else has the familiarity of not being us?
+			</blockquote>
+		</div>
+		<div class="books-grid">
+			{books.map((book) => (
+				book.image && (
+					<a href={`/publications#book-${createSlug(book.title)}`} class="book-card">
+						<img 
+							src={book.image} 
+							alt={book.title}
+							loading="lazy"
+						/>
+					</a>
+				)
+			))}
+		</div>
+	</div>
+
+	<style>
+		.hero-section {
+			padding: 6rem 2rem;
+			text-align: center;
+			border-bottom: 1px solid #e5e5e5;
+			margin-bottom: 5rem;
+		}
+
+		.epigram {
+			font-size: 1.75rem;
+			font-weight: 300;
+			line-height: 1.9;
+			color: #333;
+			font-style: italic;
+			max-width: 900px;
+			margin: 0 auto;
+			quotes: '"' '"' "'" "'";
+			letter-spacing: 0.01em;
+		}
+
+		.epigram::before {
+			content: open-quote;
+			font-size: 2.5rem;
+			line-height: 0;
+			vertical-align: -0.3em;
+			margin-right: 0.1em;
+			opacity: 0.3;
+		}
+
+		.epigram::after {
+			content: close-quote;
+			font-size: 2.5rem;
+			line-height: 0;
+			vertical-align: -0.3em;
+			margin-left: 0.1em;
+			opacity: 0.3;
+		}
+
+		.books-grid {
+			display: grid;
+			grid-template-columns: repeat(3, 1fr);
+			gap: 2.5rem;
+			padding: 2rem 0;
+		}
+
+		.book-card {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			height: 420px;
+			text-decoration: none;
+			cursor: pointer;
+		}
+
+		.book-card img {
+			width: 100%;
+			max-width: 280px;
+			height: 420px;
+			object-fit: contain;
+			transition: transform 0.4s ease, opacity 0.3s ease;
+		}
+
+		.book-card:hover img {
+			transform: scale(1.02);
+		}
+
+		@media (max-width: 968px) {
+			.books-grid {
+				grid-template-columns: repeat(2, 1fr);
+				gap: 2rem;
+			}
+		}
+
+		@media (max-width: 768px) {
+			.hero-section {
+				padding: 4rem 1.5rem;
+				margin-bottom: 4rem;
+			}
+
+			.epigram {
+				font-size: 1.375rem;
+			}
+		}
+
+		@media (max-width: 640px) {
+			.books-grid {
+				grid-template-columns: 1fr;
+				gap: 2rem;
+			}
+
+			.book-card {
+				height: 360px;
+			}
+
+			.book-card img {
+				max-width: 220px;
+				height: 360px;
+			}
+
+			.epigram {
+				font-size: 1.25rem;
+			}
+		}
+	</style>
+</Layout>

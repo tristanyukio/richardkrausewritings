@@ -1,0 +1,354 @@
+---
+import Layout from '../components/Layout.astro';
+
+function createSlug(title: string): string {
+	return title
+		.toLowerCase()
+		.replace(/[^a-z0-9]+/g, '-')
+		.replace(/(^-|-$)/g, '');
+}
+
+const books = [
+	{ 
+		id: 1, 
+		image: '/rk1.jpeg', 
+		title: 'Blind Insights into the Writing Process',
+		date: 'Paperback – March 20, 2022',
+		description: `Oedipus's vision starts blind. A book on writing suggesting anything else is imposed, a handbook of techniques unlike these epigrams and prose poems that are essentially beyond the writer, just as the creative process is, if they are honest, beyond anyone. Blind Insights into the Writing Process is a book of sightings outside the terrestrial landscape of everyday vision that as rich as it is often gets in the way of true access. These insights came about without conscious calculation, almost beyond effort; they are the result of blind, unashamed reaching.`,
+		amazonLink: 'https://www.amazon.com/Blind-Insights-into-Writing-Process-ebook/dp/B09VLCDF6M/ref=sr_1_16?crid=ZF5D1L9R98W3&dib=eyJ2IjoiMSJ9.exVu4XeV2fL5iW0VhHKshlrBUV6I_o1qJwKT3mh-Hok5iiFm25vYaK1fDW_FDwij8VePp2OM12PwINuNjf2Ax8DWcRG8DOEZrRifVykBijkUCBG0u_UzeUiZ4ntXvsvSOQ0V04ibXH4IBj6TSIRHG8QtTjG5WK5wn6w4_snBiSC1dtSUfBF5g_Ca3N3wFhVqXYLx4vTZL-S7kfT5iIomrZrpxfHhyf3tsy2AJlD8sVI.Fymb51lab-ucsm86QpX6WpZvVLwwxS3UOYfjnU0Hs4g&dib_tag=se&keywords=Richard+Krause&qid=1770488841&s=digital-text&sprefix=richard+krause%2Cdigital-text%2C205&sr=1-16'
+	},
+	{ 
+		id: 2, 
+		image: '/rk3.webp', 
+		title: 'The Horror of the Ordinary',
+		date: '',
+		description: `The Horror of the Ordinary deals with life through the eyes of diverse characters and stories. As you dive into the short story collection, you'll meet a property owner dealing with an infestation of Japanese beetles in his backyard, a too-tall Afghan named Hamid, a trophy huntiing orthodonist not prepared to deal with his actions, and many others. As you dive deeper into the collection, things get weirder, more out of the ordinary. From the unexpected tragedy of a Japanese pitcher's performance in American baseball to disturbing thoughts about an alligator watchband, every story provokes. Every story incites.`,
+		amazonLink: 'https://www.amazon.com/Horror-Ordinary-Richard-Krause-ebook/dp/B07P85DYQB/ref=sr_1_7?crid=ZF5D1L9R98W3&dib=eyJ2IjoiMSJ9.exVu4XeV2fL5iW0VhHKshlrBUV6I_o1qJwKT3mh-Hok5iiFm25vYaK1fDW_FDwij8VePp2OM12PwINuNjf2Ax8DWcRG8DOEZrRifVykBijkUCBG0u_UzeUiZ4ntXvsvSOQ0V04ibXH4IBj6TSIRHG8QtTjG5WK5wn6w4_snBiSC1dtSUfBF5g_Ca3N3wFhVqXYLx4vTZL-S7kfT5iIomrZrpxfHhyf3tsy2AJlD8sVI.Fymb51lab-ucsm86QpX6WpZvVLwwxS3UOYfjnU0Hs4g&dib_tag=se&keywords=Richard+Krause&qid=1770488841&s=digital-text&sprefix=richard+krause%2Cdigital-text%2C205&sr=1-7'
+	},
+	{ 
+		id: 3, 
+		image: '/rk6.jpg', 
+		title: 'Eye Exams: A Book of Epigrams',
+		date: '',
+		description: `Epigrams can be stabs at thought, sudden insights, or summations of a life. The fact that they don't parade in the best dress gives freedom to all types of garb; even so, occasional nakedness is exposed. Ultimately writing epigrams exposes the reader as well as the writer, and by extension all human nature -- broadening our observations of the species. The sole object is understanding.`,
+		amazonLink: 'https://www.amazon.com/Eye-Exams-Epigrams-Richard-Krause/dp/0359496512/ref=sr_1_1?crid=DIBUOQKC65ZT&dib=eyJ2IjoiMSJ9.cPJH4f9slXrxknuVnfdrNw.Vz1QSlB2VeF9zTp97ZchQyn4FwEC_yjiyQ3-DArKkJM&dib_tag=se&keywords=Richard+Krause+eye+exams&qid=1770488919&s=digital-text&sprefix=richard+krause+eye+exam%2Cdigital-text%2C167&sr=1-1'
+	},
+	{ 
+		id: 4, 
+		image: '/rk2.jpeg', 
+		title: 'Unashamed Observations',
+		date: '',
+		description: `Unashamed Observations contains prose poems about my experiences living in Japan, driving a taxi in New York City, growing up in an orphanage in Pennsylvania, detailing my contact with animals on a dairy farm along with the many men and women that I have met. The poems draw out those idiosyncrasies I have experienced, whether it be a moment of cruelty on a bus in Japan, my response to an orange on a table, the relationship of a hemophiliac to his condition, the shocking reply to someone's politeness, or my experience towards an amputee sitting before me on a Japanese train. These are the first five poems in the collection. There are 105 remaining poems.`,
+		amazonLink: 'https://www.amazon.com/Unashamed-Observations-Richard-Krause-ebook/dp/B0CSRZ8581/ref=sr_1_15?crid=ZF5D1L9R98W3&dib=eyJ2IjoiMSJ9.exVu4XeV2fL5iW0VhHKshlrBUV6I_o1qJwKT3mh-Hok5iiFm25vYaK1fDW_FDwij8VePp2OM12PwINuNjf2Ax8DWcRG8DOEZrRifVykBijkUCBG0u_UzeUiZ4ntXvsvSOQ0V04ibXH4IBj6TSIRHG8QtTjG5WK5wn6w4_snBiSC1dtSUfBF5g_Ca3N3wFhVqXYLx4vTZL-S7kfT5iIomrZrpxfHhyf3tsy2AJlD8sVI.Fymb51lab-ucsm86QpX6WpZvVLwwxS3UOYfjnU0Hs4g&dib_tag=se&keywords=Richard+Krause&qid=1770488841&s=digital-text&sprefix=richard+krause%2Cdigital-text%2C205&sr=1-15'
+	},
+	{ 
+		id: 5, 
+		image: '/rk5.webp', 
+		title: 'Studies in Insignificance',
+		date: '',
+		description: `Richard Krause has delineated, in fine detail and meticulous writing, the disconcerting strains underlying all humanity, sometimes by focusing on abandoned children, sometimes on sexual nuances, and sometimes on the lingering effect of World War II and its atrocities. Krause taught in Japan for several years; he also worked as a taxi driver in New York City for several years: oddly, those disparate occupations forge a finely hammered toughness into this collection, giving the reader plenty of quirky, desperate characters presented in a melodious, poetic fashion. Imagine, for instance, Baudelaire writing fiction—though you would need to add a tongue-in-cheek voice continually pulling the story back to offer perspective. The stories in this collection have been published in Hawaii Review, American Writing, The Crescent Review, Kansas Quarterly Confrontation, and other literary magazines.`,
+		amazonLink: 'https://www.amazon.com/Studies-Insignificance-Richard-Krause-ebook/dp/B005N1OTKI/ref=sr_1_12?crid=ZF5D1L9R98W3&dib=eyJ2IjoiMSJ9.exVu4XeV2fL5iW0VhHKshlrBUV6I_o1qJwKT3mh-Hok5iiFm25vYaK1fDW_FDwij8VePp2OM12PwINuNjf2Ax8DWcRG8DOEZrRifVykBijkUCBG0u_UzeUiZ4ntXvsvSOQ0V04ibXH4IBj6TSIRHG8QtTjG5WK5wn6w4_snBiSC1dtSUfBF5g_Ca3N3wFhVqXYLx4vTZL-S7kfT5iIomrZrpxfHhyf3tsy2AJlD8sVI.Fymb51lab-ucsm86QpX6WpZvVLwwxS3UOYfjnU0Hs4g&dib_tag=se&keywords=Richard+Krause&qid=1770488841&s=digital-text&sprefix=richard+krause%2Cdigital-text%2C205&sr=1-12'
+	},
+	{ 
+		id: 6, 
+		image: '/rk4.webp', 
+		title: 'Crawl Space and Other Stories of Limited Maneuverability',
+		date: '',
+		description: `Crawl Space and Other Stories of Limited Maneuverability is a collection of stories about the fallout from limited maneuverability, whether it be the horror inside the walls of a New York City apartment, the firing of a professor on a college campus, bullying in the basement of an orphanage, the restraint a father feels reaching out to touch a youth, the confinement inside jockey underwear, the consolation of a typewriter over an unreported violence, an actual hanging by boys after a church service, the fatal end of a patient's world following a hospital miracle, the shyness of a classical pianist breached by a man named Ray Rice, the drama inside a Madrid bullring, the consequences of an old man's collapse at a urinal in Yokohama, the rejection of the vegetarian Cain by God, the torment of a pelican under a bridge in Mexico, Presidents' shooting bears or obsessing about scratches on a cherry table, a preoccupation with curtains when preparing for a visitor, how a house full of knickknacks replaces people, the power of beets exposing sibling rivalry, a predicted automobile accident enlarging the stunted lives of two lovers, the claustrophobia over a book of Matisse art, the triumph after the modest boasts of an actual stuntman, the recollections of a stubborn liver in a frying pan, the weekly ritual of Pop paddling young boys, a pearl family's revenge for the horrors of World War II, the secret life of a British aesthete in Japan, and the results of reduced mobility inside an actual crawl space.`,
+		amazonLink: 'https://www.amazon.com/Crawl-Space-Stories-Limited-Maneuverability-ebook/dp/B09BQF5L5R/ref=sr_1_9?crid=ZF5D1L9R98W3&dib=eyJ2IjoiMSJ9.exVu4XeV2fL5iW0VhHKshlrBUV6I_o1qJwKT3mh-Hok5iiFm25vYaK1fDW_FDwij8VePp2OM12PwINuNjf2Ax8DWcRG8DOEZrRifVykBijkUCBG0u_UzeUiZ4ntXvsvSOQ0V04ibXH4IBj6TSIRHG8QtTjG5WK5wn6w4_snBiSC1dtSUfBF5g_Ca3N3wFhVqXYLx4vTZL-S7kfT5iIomrZrpxfHhyf3tsy2AJlD8sVI.Fymb51lab-ucsm86QpX6WpZvVLwwxS3UOYfjnU0Hs4g&dib_tag=se&keywords=Richard+Krause&qid=1770488841&s=digital-text&sprefix=richard+krause%2Cdigital-text%2C205&sr=1-9'
+	},
+];
+
+const magazines = [
+	{ title: 'The Handkerchief', publication: 'Red Savina Review', date: 'Vol.3 Issue 2 2019', type: 'Story' },
+	{ title: 'Raising Cain', publication: 'Dodging the Rain', date: 'February 1, 2019', type: 'Story', location: 'Galway, Ireland' },
+	{ title: 'Nails, An Ugly Sounding Name', publication: 'Offcourse', date: 'Issue 75 December 2018', type: 'Prose Poems' },
+	{ title: 'Hawking', publication: 'Flash Fiction Magazine', date: 'October 15, 2018', type: 'Story' },
+	{ title: 'Urban Tales', publication: 'Scarlet Leaf Review', date: 'September 2018', type: 'Story', location: 'Toronto' },
+	{ title: 'People Pry, Tea Ceremony, Talent', publication: 'The Courtship of Winds', date: 'Summer Issue 2018', type: 'Prose Poems' },
+	{ title: 'A Piano Story', publication: 'Subtle Fiction', date: 'March 26, 2018', type: 'Story', location: 'New Zealand' },
+	{ title: 'Another Zoo Story', publication: 'EXPOUND', date: 'Issue 11 September 2017', type: 'Story', location: 'Nigeria' },
+	{ title: 'Baseball', publication: 'Cold Creek Review', date: 'Issue 3 2017', type: 'Story' },
+	{ title: 'The Firing of the Music Teacher', publication: 'ink&coda', date: 'Issue 4.2 Summer 2017', type: 'Story' },
+	{ title: 'The Splinter', publication: 'Hackwriters Magazine', date: 'March 2017', type: 'Story', location: 'England' },
+	{ title: 'Hamid, the Water Carrier', publication: 'Indiana Voice Journal', date: 'Issue 28 November 2016', type: 'Story' },
+	{ title: 'The Tension of Suspenders', publication: 'Indiana Voice Journal', date: 'Issue 27 October 2016', type: 'Story' },
+	{ title: 'The Watchband', publication: 'Brilliant Flash Fiction', date: 'Issue 11 September 2016', type: 'Story', location: 'Ireland' },
+	{ title: 'Out of State Plates, or Decapitation 101', publication: 'Scarlet Leaf Review', date: 'September 2016', type: 'Story', location: 'Toronto' },
+	{ title: 'The Coat', publication: 'The Oddville Press', date: 'Vol. 5 Issue 40 Summer 2016', type: 'Story', location: 'London' },
+	{ title: 'The Untold Story of the Awaji Puppet Master', publication: 'Eastlit', date: 'June 2016', type: 'Story', location: 'Japan' },
+	{ title: 'Vermont Winter', publication: 'Turks Head Review', date: 'March 2016', type: 'Prose Poem' },
+	{ title: 'Irving', publication: 'The Scapegoat Review', date: 'Spring 2015', type: 'Prose Poem' },
+	{ title: 'The Child Molester', publication: 'Red Savina Review', date: 'Vol. 3 Issue 2 2015', type: 'Story' },
+	{ title: 'Crossing State Lines', publication: 'J Journal', date: 'Volume 7 No. 2 Fall 2014', type: 'Story' },
+	{ title: 'Books', publication: 'quarrtsiluni', date: 'October 2012', type: 'Prose Poem' },
+	{ title: 'Epigrams', publication: 'aforisticamente', date: 'June 2012', type: 'Seventy Epigrams translated into Italian', location: 'International website for aphorists' },
+	{ title: 'Epigrams', publication: 'Hotel America', date: 'Volume 90 Number 2 Spring 2011', type: 'Ten Epigrams', note: 'Aphorisms Issue' },
+	{ title: 'The Betrayal', publication: 'The Long Story', date: 'No. 29 2011', type: 'Story' },
+	{ title: 'Gregor', publication: 'J Journal', date: 'Vol. 3, No.1 Spring 2010', type: 'Story' },
+	{ title: 'The Alumnus of the Year', publication: 'The Alembic', date: '2010', type: 'Story' },
+	{ title: 'Shorts (Solitude)', publication: 'Fraglit Magazine', date: 'Issue 7 Fall 2010', type: 'Epigram' },
+	{ title: 'Epigrams', publication: 'Fraglit Magazine', date: 'Issue 3 Summer 2008', type: 'Seventy Epigrams', note: 'Philosophical Notebooks' },
+	{ title: 'Spoons', publication: 'The Heartland Review', date: 'Vol. VI Number 1 2005', type: 'Story' },
+	{ title: 'The Dwarf', publication: 'Thin Air', date: 'Vol.VI No. 2 2001', type: 'Story' },
+	{ title: 'The Door', publication: 'American Writing', date: '21 2001', type: 'Story' },
+	{ title: 'The Door', publication: 'The Love Book (by Collages & Bricolages)', date: '2002', type: 'Story', note: 'Reprinted' },
+	{ title: 'The Trick Is', publication: 'The Prose Poem: An International Journal', date: 'Vol. 7 1998', type: 'Prose Poem' },
+	{ title: 'Hands', publication: 'Ellipsis', date: 'Vol. 33 No. 2 Spring 1997', type: 'Story' },
+	{ title: 'Shoe Polish', publication: 'American Writing', date: '14 1997', type: 'Story' },
+	{ title: 'Onnagata', publication: 'Japanophile', date: 'Vol. 20 No. 4 Fall 1996', type: 'Story', note: 'Received First Prize in the 1996 Japanophile Short Story Contest' },
+	{ title: 'Taro', publication: 'Hawaii Review', date: 'Vol. 19.3 1995', type: 'Story' },
+	{ title: 'The Eye', publication: 'Mind in Motion', date: 'Summer Issue 34 1994', type: 'Story' },
+	{ title: 'Toothpaste', publication: 'Painted Bride Quarterly', date: 'Double Issue 53/54 Summer 1994', type: 'Story', note: 'Received Second Place in 1994 Painted Bride Quarterly Fiction Contest' },
+	{ title: 'Selected Epigrams', publication: 'Asylum Annual', date: 'Vol. 9 1994', type: 'Epigrams' },
+	{ title: 'Another Water Ritual', publication: 'Nexus', date: 'Vol. 28 Issue 2 1993', type: 'Story' },
+	{ title: 'Waiting', publication: 'Wind', date: 'Vol. 23 No. 72 1993', type: 'Story' },
+	{ title: 'Mouth', publication: 'Asylum', date: 'Vol. 7 No. 3&4 1992', type: 'Story' },
+	{ title: 'Coccyx', publication: 'Onionhead', date: 'October 1992', type: 'Story' },
+	{ title: 'Pigeons', publication: 'Kentucky Writing', date: 'Vol. 6 No. 2 Spring/Summer 1991', type: 'Story' },
+	{ title: 'Shower', publication: 'Confrontation', date: 'No. 37-38 1988', type: 'Story' },
+	{ title: 'Four Prose Poems', publication: 'American Poetry Review', date: 'Vol. 16 No. 4 July/August 1987', type: 'Prose Poems' },
+	{ title: 'Politeness, A Letter', publication: 'Aura', date: '19 Fall 1985', type: 'Prose Poems' },
+	{ title: 'A Study in Insignificance', publication: 'Kansas Quarterly', date: 'Vol. 17 Nos.1-2 Winter/Spring 1985', type: 'Story' },
+	{ title: 'The Curtains', publication: 'Descant', date: 'Vol. XXIX No 1 Fall/Winter 1984-1985', type: 'Story' },
+	{ title: 'Benares', publication: 'Waves', date: 'Vol. 12 No. 2&3 Winter 1984', type: 'Story' },
+	{ title: 'Isn\'t It Because', publication: 'California Quarterly', date: 'No. 25 Fall 1984', type: 'Prose' },
+	{ title: 'He', publication: 'Touchstone', date: 'Vol. IX No. 3 1984', type: 'Story' },
+	{ title: 'Writing', publication: 'Wisconsin Review', date: 'Vol. XVI No.3 October 1982', type: 'Prose' },
+	{ title: 'Finger & Others', publication: 'Waves', date: 'Vol.10 No. 4 Spring 1982', type: 'Epigrams' },
+	{ title: 'The Nose', publication: 'Prism', date: 'Vol. 20 No.l Autumn 1981', type: 'Story' },
+	{ title: 'Selected Epigrams', publication: 'Portland Review', date: 'Vol. 27 No.l Fall/Winter 1981', type: 'Epigrams' },
+	{ title: 'The Brown Shirt', publication: 'The Crescent Review', date: 'Vol. 17 No.1', type: 'Story', note: 'Accepted for publication' },
+];
+---
+
+<Layout title="Publications">
+	<div style="max-width: 1200px; margin: 0 auto;">
+		<h1 style="font-size: 2.5rem; font-weight: 300; margin-bottom: 2rem; letter-spacing: 0.05em;">
+			Publications
+		</h1>
+		
+		<nav class="publications-nav">
+			<a href="#books">Books</a>
+			<a href="#magazines">Magazines</a>
+		</nav>
+		
+		<h2 id="books" class="section-heading">Books</h2>
+		<div class="publications-list">
+			{books.map((book) => (
+				<div id={`book-${createSlug(book.title)}`} class="publication-item book-anchor">
+					{book.image && (
+						<img 
+							src={book.image} 
+							alt={book.title}
+							loading="lazy"
+							class="book-cover"
+						/>
+					)}
+					<div class="publication-content">
+						<h2 class="book-title">{book.title}</h2>
+						{book.date && (
+							<p class="book-date">{book.date}</p>
+						)}
+						<p class="book-description">{book.description}</p>
+						<a href={book.amazonLink} target="_blank" rel="noopener noreferrer" class="amazon-link">
+							View on Amazon →
+						</a>
+					</div>
+				</div>
+			))}
+		</div>
+
+		<h2 id="magazines" class="section-heading">Magazines</h2>
+		<div class="publications-list">
+			{magazines.length > 0 ? (
+				magazines.map((magazine) => (
+					<div class="magazine-item">
+						<div class="magazine-content">
+							<h3 class="magazine-title">"{magazine.title}"</h3>
+							<p class="magazine-publication">
+								<strong>{magazine.publication}</strong>
+								{magazine.location && <span class="magazine-location"> ({magazine.location})</span>}
+							</p>
+							<p class="magazine-details">
+								{magazine.date} • {magazine.type}
+								{magazine.note && <span class="magazine-note"> • {magazine.note}</span>}
+							</p>
+						</div>
+					</div>
+				))
+			) : (
+				<p style="color: #666; font-style: italic;">Magazine publications coming soon.</p>
+			)}
+		</div>
+	</div>
+
+	<style>
+		.publications-nav {
+			display: flex;
+			gap: 2rem;
+			margin-bottom: 3rem;
+			padding-bottom: 1.5rem;
+			border-bottom: 1px solid #e5e5e5;
+		}
+
+		.publications-nav a {
+			color: #666;
+			text-decoration: none;
+			font-size: 1rem;
+			text-transform: uppercase;
+			letter-spacing: 0.05em;
+			transition: color 0.2s;
+		}
+
+		.publications-nav a:hover {
+			color: #1a1a1a;
+		}
+
+		.section-heading {
+			font-size: 1.75rem;
+			font-weight: 300;
+			margin-top: 4rem;
+			margin-bottom: 2rem;
+			letter-spacing: 0.05em;
+			color: #1a1a1a;
+			scroll-margin-top: 2rem;
+		}
+
+		.section-heading:first-of-type {
+			margin-top: 0;
+		}
+
+		.publications-list {
+			display: flex;
+			flex-direction: column;
+			gap: 3rem;
+			margin-bottom: 2rem;
+		}
+
+		.publication-item {
+			display: flex;
+			gap: 2.5rem;
+			padding-bottom: 3rem;
+			border-bottom: 1px solid #e5e5e5;
+		}
+
+		.book-anchor {
+			scroll-margin-top: 2rem;
+		}
+
+		.publication-item:last-child {
+			border-bottom: none;
+			padding-bottom: 0;
+		}
+
+		.book-cover {
+			width: 200px;
+			height: 300px;
+			object-fit: contain;
+			flex-shrink: 0;
+			box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+		}
+
+		.publication-content {
+			flex: 1;
+		}
+
+		.book-title {
+			font-size: 1.5rem;
+			font-weight: 400;
+			margin-bottom: 0.5rem;
+			color: #1a1a1a;
+			line-height: 1.4;
+		}
+
+		.book-date {
+			color: #666;
+			font-size: 0.95rem;
+			margin-bottom: 1rem;
+			font-style: italic;
+		}
+
+		.book-description {
+			color: #333;
+			font-size: 1rem;
+			line-height: 1.7;
+			margin-bottom: 1.5rem;
+		}
+
+		.amazon-link {
+			color: #1a1a1a;
+			text-decoration: none;
+			font-size: 0.95rem;
+			border-bottom: 1px solid #1a1a1a;
+			transition: color 0.3s ease, border-color 0.3s ease;
+			display: inline-block;
+		}
+
+		.amazon-link:hover {
+			color: #666;
+			border-bottom-color: #666;
+		}
+
+		.magazine-item {
+			padding-bottom: 2rem;
+			border-bottom: 1px solid #e5e5e5;
+		}
+
+		.magazine-item:last-child {
+			border-bottom: none;
+			padding-bottom: 0;
+		}
+
+		.magazine-title {
+			font-size: 1.25rem;
+			font-weight: 400;
+			margin-bottom: 0.5rem;
+			color: #1a1a1a;
+			font-style: italic;
+		}
+
+		.magazine-publication {
+			color: #333;
+			font-size: 1rem;
+			margin-bottom: 0.25rem;
+		}
+
+		.magazine-location {
+			color: #666;
+			font-weight: normal;
+		}
+
+		.magazine-details {
+			color: #666;
+			font-size: 0.95rem;
+			margin: 0;
+		}
+
+		.magazine-note {
+			font-style: italic;
+		}
+
+		@media (max-width: 768px) {
+			.publication-item {
+				flex-direction: column;
+				gap: 1.5rem;
+			}
+
+			.book-cover {
+				width: 150px;
+				height: 225px;
+				align-self: flex-start;
+			}
+
+			.book-title {
+				font-size: 1.25rem;
+			}
+
+			.magazine-title {
+				font-size: 1.125rem;
+			}
+		}
+	</style>
+</Layout>
+
