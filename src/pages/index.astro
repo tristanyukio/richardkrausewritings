@@ -15,6 +15,7 @@ const books = [
 	{ id: 4, image: '/rk2.jpeg', title: 'Unashamed Observations' },
 	{ id: 5, image: '/rk5.webp', title: 'Studies in Insignificance' },
 	{ id: 6, image: '/rk4.webp', title: 'Crawl Space and Other Stories of Limited Maneuverability' },
+	{ id: 7, image: '/rk7.jpg', title: 'Optical Biases: Epigrams', whiteCover: true },
 ];
 ---
 
@@ -29,11 +30,13 @@ const books = [
 			{books.map((book) => (
 				book.image && (
 					<a href={`/publications#book-${createSlug(book.title)}`} class="book-card">
-						<img 
-							src={book.image} 
-							alt={book.title}
-							loading="lazy"
-						/>
+						<div class={book.whiteCover ? 'book-image-wrapper white-cover' : 'book-image-wrapper'}>
+							<img 
+								src={book.image} 
+								alt={book.title}
+								loading="lazy"
+							/>
+						</div>
 					</a>
 				)
 			))}
@@ -94,6 +97,21 @@ const books = [
 			cursor: pointer;
 		}
 
+		.book-image-wrapper {
+			width: 100%;
+			max-width: 280px;
+			height: 420px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+
+		.book-image-wrapper.white-cover {
+			background: linear-gradient(135deg, #f8f8f8 0%, #f0f0f0 100%);
+			padding: 0.5rem;
+			border-radius: 2px;
+		}
+
 		.book-card img {
 			width: 100%;
 			max-width: 280px;
@@ -131,6 +149,11 @@ const books = [
 			}
 
 			.book-card {
+				height: 360px;
+			}
+
+			.book-image-wrapper {
+				max-width: 220px;
 				height: 360px;
 			}
 

@@ -34,6 +34,14 @@ const books = [
 		amazonLink: 'https://www.amazon.com/Eye-Exams-Epigrams-Richard-Krause/dp/0359496512/ref=sr_1_1?crid=DIBUOQKC65ZT&dib=eyJ2IjoiMSJ9.cPJH4f9slXrxknuVnfdrNw.Vz1QSlB2VeF9zTp97ZchQyn4FwEC_yjiyQ3-DArKkJM&dib_tag=se&keywords=Richard+Krause+eye+exams&qid=1770488919&s=digital-text&sprefix=richard+krause+eye+exam%2Cdigital-text%2C167&sr=1-1'
 	},
 	{ 
+		id: 7, 
+		image: '/rk7.jpg', 
+		title: 'Optical Biases: Epigrams',
+		date: '',
+		description: `OPTICAL BIASES is a collection of original epigrams. Each epigram is carefully culled, has a twist or edge, and is included as an aesthetic whole. They are readable. They are clear. They don't require head scratching. Though they might not be read in a sitting, a reader would easily want to go through them once started. There is humor and no fillers are intended. Overall the collection shows a way of looking, despite the writer's own optical biases. Meaning and insight are the objects throughout. Areas that are addressed include intelligence, love, women, beauty, sex, cruelty, loneliness, friendship, talent and ambition, family, religion, and power.`,
+		amazonLink: ''
+	},
+	{ 
 		id: 4, 
 		image: '/rk2.jpeg', 
 		title: 'Unashamed Observations',
@@ -138,12 +146,14 @@ const magazines = [
 			{books.map((book) => (
 				<div id={`book-${createSlug(book.title)}`} class="publication-item book-anchor">
 					{book.image && (
-						<img 
-							src={book.image} 
-							alt={book.title}
-							loading="lazy"
-							class="book-cover"
-						/>
+						<div class={book.image === '/rk7.jpg' ? 'book-cover-wrapper white-cover' : 'book-cover-wrapper'}>
+							<img 
+								src={book.image} 
+								alt={book.title}
+								loading="lazy"
+								class="book-cover"
+							/>
+						</div>
 					)}
 					<div class="publication-content">
 						<h2 class="book-title">{book.title}</h2>
@@ -242,11 +252,20 @@ const magazines = [
 			padding-bottom: 0;
 		}
 
+		.book-cover-wrapper {
+			flex-shrink: 0;
+		}
+
+		.book-cover-wrapper.white-cover {
+			background: linear-gradient(135deg, #f8f8f8 0%, #f0f0f0 100%);
+			padding: 0.75rem;
+			border-radius: 2px;
+		}
+
 		.book-cover {
 			width: 200px;
 			height: 300px;
 			object-fit: contain;
-			flex-shrink: 0;
 			box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 		}
 
@@ -335,10 +354,13 @@ const magazines = [
 				gap: 1.5rem;
 			}
 
+			.book-cover-wrapper {
+				align-self: flex-start;
+			}
+
 			.book-cover {
 				width: 150px;
 				height: 225px;
-				align-self: flex-start;
 			}
 
 			.book-title {
